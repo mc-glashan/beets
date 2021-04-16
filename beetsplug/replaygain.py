@@ -987,10 +987,12 @@ class ReplayGainPlugin(BeetsPlugin):
             'targetlevel': 89,
             'r128': ['Opus'],
             'r128_targetlevel': lufs_to_db(-23),
+            'copy_album_gain': False,
         })
 
         self.overwrite = self.config['overwrite'].get(bool)
         self.per_disc = self.config['per_disc'].get(bool)
+        self.copy_album_gain = self.config['copy_album_gain'].get(bool)
 
         # Remember which backend is used for CLI feedback
         self.backend_name = self.config['backend'].as_str()
@@ -1069,6 +1071,8 @@ class ReplayGainPlugin(BeetsPlugin):
         item.store()
         self._log.debug('applied album gain {0} LU, peak {1} of FS',
                         item.rg_album_gain, item.rg_album_peak)
+        if self.copy_album_gain:
+            self.store_track_gain(item, album_gain)
 
     def store_track_r128_gain(self, item, track_gain):
         item.r128_track_gain = track_gain.gain
@@ -1082,6 +1086,8 @@ class ReplayGainPlugin(BeetsPlugin):
         item.store()
         self._log.debug('applied r128 album gain {0} LU',
                         item.r128_album_gain)
+        if self.copy_album_gain:
+            self.store_track_r128_gain(item, album_gain)
 
     def tag_specific_values(self, items):
         """Return some tag specific values.
