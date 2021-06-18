@@ -12,6 +12,9 @@ dependencies---packagers, please take note.
 Finally, this is the last version of beets where we intend to support Python
 2.x and 3.5; future releases will soon require Python 3.6.
 
+One non-technical change includes that we moved our official ``#beets`` home
+on IRC from freenode to Libera.Chat.
+
 Major new features:
 
 * A new :ref:`reflink` config option instructs the importer to create fast,
@@ -46,6 +49,9 @@ Major new features:
 
 Other new things:
 
+* Document Libera.Chat as the new official IRC home. Thanks to :user:`Freso`.
+* Enable HTTPS for MusicBrainz by default and add configuration option
+  `https` for custom servers.
 * :doc:`/plugins/mpdstats`: Add a new `strip_path` option to help build the
   right local path from MPD information.
 * :doc:`/plugins/convert`: Conversion can now parallelize conversion jobs on
@@ -202,6 +208,8 @@ Other new things:
   configuration.
   Thanks to :user:`FichteFoll`.
   :bug:`2797` :bug:`2988`
+* Add ``mb_album_extract`` and ``mb_track_extract`` hooks to allow
+  plugins to add new fields based on MusicBrainz data. Thanks to :user:`dosoe`.
 * Removes usage of the bs1770gain replaygain backend.
   Thanks to :user:`SamuelCook`.
 * Added ``trackdisambig`` which stores the recording disambiguation from
@@ -212,6 +220,17 @@ Other new things:
   used to target a maximum image filesize.
 * :doc:`/plugins/badfiles`: Checkers can now be run during import with the
   ``check_on_import`` config option.
+* :doc:`/plugins/export`: big speedups when `--include-keys` option is used
+  Thanks to :user:`ssssam`.
+* The `importer` persists all fields set using :ref:`set_fields` to the
+  mediafiles of all imported tracks.
+* Added 7z support via the `py7zr`_ library
+  Thanks to :user:`arogl`.  :bug:`3906`
+* Get ISRC identifiers from musicbrainz
+  Thanks to :user:`aereaux`.
+* :doc:`/plugins/metasync`: The ``metasync`` plugin now also fetches the ``Date Added`` field from iTunes databases and stores it in the``itunes_dateadded`` field.Thanks to :user:`sandersantema`.
+
+  .. _py7zr: https://pypi.org/project/py7zr/
 
 Fixes:
 
@@ -355,6 +374,13 @@ Fixes:
   :bug:`2984`
 * :doc:`/plugins/lyrics`: Fix crashes for Tekstowo false positives
   :bug:`3904`
+* :doc`/reference/cli`: Remove reference to rarfile version in link
+* Fix :bug:`2873`. Duplicates can now generate checksums. Thanks user:`wisp3rwind`
+  for the pointer to how to solve. Thanks to :user:`arogl`.
+* Templates that use ``%ifdef`` now produce the expected behavior when used in
+  conjunction with non-string fields from the :doc:`/plugins/types`.
+  :bug:`3852`
+
 
 For plugin developers:
 
@@ -1998,7 +2024,7 @@ Major new features and bigger changes:
   search results you wish to see when looking up releases at MusicBrainz
   during import. :bug:`1245`
 * The importer now records the data source for a match in a new
-  flexible attribute `data_source` on items and albums. :bug:`1311`
+  flexible attribute ``data_source`` on items and albums. :bug:`1311`
 * The colors used in the terminal interface are now configurable via the new
   config option ``colors``, nested under the option ``ui``. (Also, the `color`
   config option has been moved from top-level to under ``ui``. Beets will
